@@ -12,19 +12,37 @@ openai.api_key = toml.load('secrets.toml')['OPENAI_API_KEY']#os.getenv("OPENAI_A
 def send_prompt(prompt):
     # prompt="""Based on the profile of a 30 years man, with 165 cms and 65 kg, Create a weekly meal plan including 3 meals per day, with 2000 calories daily, on a 100 dolars budget.
     #  Also include a full list of all ingredients after giving all the meals. No need to include prices"""
-    prompt="""Create a meal plan for 5 days including 3 meals per day and create a list of all ingredients, for a 30 years man, with 165 cms and 65 kg, with 2000 calories daily, on a 100 dolars budget. Make all meals Vegan, and Avoid these ingredients: peanuts."""
+    # prompt="""Create a meal plan for 2 days for 3 meals per day and create a list of all ingredients, for a 30 years man, with 165 cms and 65 kg, with 2000 calories daily, on a 100 dolars budget. Make all meals Vegan, and Avoid these ingredients: peanuts."""
+    prompt="""Create a weekly meal plan for 2 days including 3 meals per day and Create a list of all ingredients, for a 30 years man, with 165 cms and 65 kg, with 2000 calories daily, on a 100 dolars budget. Make all meals Vegan, and Avoid these ingredients: peanuts."""
+#     prompt="""Create a Weekly Meal Plan Request
+# Profile: 30-year-old man, 165 cm tall, 65 kg weight
+# Objective: Create a day meal plan with 3 meals per day, 2000 calories daily, and a $100 budget. All meals should be vegan, and avoid peanuts. Do not include instructions
+# Format: JSON format
+# """
+# Specifications: Vegan options and avoid including: peanuts
+
+    format=""" use the following structure:
+    [DAY:
+    - Breakfast: Name
+    - Lunch: Name
+    - Dinner: Name],
+    ...
+    Ingredients:
+    [ ... ]
+    """
+    # prompt=prompt+format
     print(f"================\nThis is the plan\n"+prompt)
     tic=time.time()
-    max_tokens=1000-len(prompt.split())
+    max_tokens=2000-len(prompt.split())
     response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="text-davinci-003",
         prompt=prompt,
         temperature=0.3,
         max_tokens=max_tokens,
-        top_p=1,
+        # top_p=1,
         frequency_penalty=0.5,
         presence_penalty=0.5,
-        # stop=["\n"]
+        # stop="\n"
     )
     print("Took "+str(time.time()-tic))
     return response
