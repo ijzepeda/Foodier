@@ -26,7 +26,6 @@ jobs:
           npm run build
           cd ..       
           ls
-          mkdir backend/build
           cp -r frontend/build/. backend/build
           cp -r frontend/build/static/. backend/static
           ls
