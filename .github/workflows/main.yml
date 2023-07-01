@@ -20,4 +20,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: |
           node -v
-          ls
+          cd frontend
+          npm i
+          npm run build
+          cd backend
+          pm2 list
