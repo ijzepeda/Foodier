@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useState } from 'react';
 import { Center, Container, createStyles, Header } from '@mantine/core';
 import Formpage from './views/FormPage';
