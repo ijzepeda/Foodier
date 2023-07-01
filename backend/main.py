@@ -7,6 +7,7 @@ import toml
 import time
 import cohere
 
+from utils.send_email import send_email
 
 # FastAPI 
 app = FastAPI()
@@ -131,4 +132,8 @@ async def root(body): #body
     print(_response)
 
     _response_clean = clean_response(_response)
+    # send_email(name, ingredients, email)
+    # send_email(name)
+
+
     return {"message": _response_clean}

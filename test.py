@@ -10,6 +10,7 @@
 import toml
 import time
 import cohere
+from utils.send_email import send_email
 
 
 
@@ -124,6 +125,8 @@ def test(body): #body
     print(_response)
 
     _response_clean = clean_response(_response)
+    send_email(name, _response_clean)
+
     return {"message": _response_clean}
 
 
