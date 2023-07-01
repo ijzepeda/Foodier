@@ -1,11 +1,8 @@
 import toml
-
 import time
-
-#  Load COHERE_API_KEY from secrets.toml 
-cohere_key = toml.load('secrets.toml')['COHERE_API_KEY']
-
 import cohere
+
+cohere_key = toml.load('secrets.toml')['COHERE_API_KEY']
 co = cohere.Client(cohere_key) 
 
 
@@ -59,8 +56,9 @@ else:
     # likes = input("What are your likes? ")
 
 
-
+# ====================
 # Create Prompt
+# ====================
 
 if(diet != None):
     if_diet= f"""Make all meals {diet}""" 
@@ -70,8 +68,8 @@ else:
     if_diet= ""
 
 is_allergic=f""" Avoid these ingredients: {allergies}. """ if allergies != None else ""
-
-cohere_prompt=f'Create a weekly meal plan for {number_of_meals} meals per day, for a {age} years {gender}, with {height} cm and {weight} kg, with {calories} calories daily, on a {budget} dollars budget. {if_diet}{is_allergic}And create a list of all ingredients.\nStructure the text in JSON format, including the name of the day, the name of the dish, and all ingredients together unsorted at the end\nDo not include extra text or descriptions. Provide different dishes on different days'
+json_format="\nUse this JSON Structure:\n{\n  Monday: {\n    Breakfast: str,\n    Lunch: str,\n    Dinner: str\n  },\n# repeat for all 5 days\nIngredients: list\n}"
+cohere_prompt=f'Create a weekly meal plan for {number_of_meals} meals per day, for a {age} years {gender}, with {height} cm and {weight} kg, with {calories} calories daily, on a {budget} dollars budget. {if_diet}{is_allergic}And create a list of all ingredients.\nStructure the text in JSON format, including the name of the day, the name of the dish, and all ingredients together unsorted at the end\nDo not include extra text or descriptions. Provide different dishes on different days'+json_format
 
 response = send_prompt(cohere_prompt)
 print(response)

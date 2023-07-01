@@ -1,3 +1,14 @@
+# TODO:
+# TODO: parse different jsons 
+# TODO: send email with ingredients
+# TODO: 
+# TODO: adapt summarizer for Q&A
+# TODO: 
+
+
+
+
+
 import json
 
 # Define a mapping to extract data from the source JSON to your own JSON
@@ -104,3 +115,19 @@ def ap2():
             return False
 
         return True
+
+
+
+
+
+import cohere
+co = cohere.Client('dOsQbNVpPcIncdDvTBecyzdK1a7zupSgYJghCqV3') # This is your trial API key
+response = co.generate(
+  model='command',
+  prompt='Create a weekly meal plan for 3 meals per day, for a 30 years man, with 165 cm and 65 kg, with 2000 calories daily, on a 100 dollars budget. Make all meals Vegan, and Avoid these ingredients: peanuts. And create a list of all ingredients.\nStructure the text in JSON format, including the name of the day, the name of the dish, and all ingredients together unsorted at the end\nDo not include extra text or descriptions. Provide different dishes on different days\nUse this JSON Structure:\n{\n  Monday: {\n    Breakfast: str,\n    Lunch: str,\n    Dinner: str\n  },\n# repeat for all 5 days\nIngredients: list\n}',
+  max_tokens=3058,
+  temperature=0.5,
+  k=0,
+  stop_sequences=[],
+  return_likelihoods='NONE')
+print('Prediction: {}'.format(response.generations[0].text))

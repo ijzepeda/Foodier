@@ -23,5 +23,6 @@ async def serve_spa(request: Request):
 
 # serves api call to the chatgpt
 @app.get("/api")
-async def root():
+async def root(body): #body
+    #segregate the body
     return {"message": _response}
