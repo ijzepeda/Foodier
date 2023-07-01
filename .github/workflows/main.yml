@@ -23,7 +23,9 @@ jobs:
           cd frontend
           npm i
           npm run build
-          cp -r frontend/build/. backend/build
-          cp -r frontend/build/static/. /backend/static
+          ls
+          sudo cp -r frontend/build/. backend/build
+          sudo cp -r frontend/build/static/. /backend/static
+          ls
           cd backend
           pm2 list
