@@ -1,7 +1,7 @@
 import pandas as pd
 import toml
 import openai 
-import user
+import models.user as user
 
 import time
 

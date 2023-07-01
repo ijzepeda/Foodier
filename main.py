@@ -1,7 +1,4 @@
-import pandas as pd
 import toml
-import openai 
-import user
 
 import time
 
@@ -63,9 +60,7 @@ else:
 
 
 
-# Approach1
-pre_prompt_profile=f"""Based on the profile of a {age} years {gender}, with {height} cms and {weight} kg, """
-pre_prompt_plan=f"""Create a {days_of_week} meal plan including {number_of_meals} meals per day, with {calories} calories daily, on a {budget} dolars budget. """
+# Create Prompt
 
 if(diet != None):
     if_diet= f"""Make all meals {diet}""" 
@@ -76,8 +71,9 @@ else:
 
 is_allergic=f""" Avoid these ingredients: {allergies}. """ if allergies != None else ""
 
-cohere_prompt=f'Create a weekly meal plan for {number_of_meals} meals per day, for a {age} years {gender}, with {height} cm and {weight} kg, with {calories} calories daily, on a {budget} dollars budget.{if_diet}{is_allergic}And create a list of all ingredients.\nStructure the text in JSON format, including the name of the day, the name of the dish, and all ingredients together unsorted at the end\nDo not include extra text or descriptions. Provide different dishes on different days'
+cohere_prompt=f'Create a weekly meal plan for {number_of_meals} meals per day, for a {age} years {gender}, with {height} cm and {weight} kg, with {calories} calories daily, on a {budget} dollars budget. {if_diet}{is_allergic}And create a list of all ingredients.\nStructure the text in JSON format, including the name of the day, the name of the dish, and all ingredients together unsorted at the end\nDo not include extra text or descriptions. Provide different dishes on different days'
 
 response = send_prompt(cohere_prompt)
 print(response)
+
 

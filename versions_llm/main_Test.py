@@ -1,7 +1,7 @@
 import pandas as pd
 import toml
 import openai 
-import user
+import models.user as user
 
 #  Load OPENAI_API from secrets.toml 
 openai.api_key = toml.load('secrets.toml')['OPENAI_API_KEY']#os.getenv("OPENAI_API_KEY")
