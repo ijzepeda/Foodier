@@ -6,7 +6,7 @@ cohere_key = toml.load('secrets.toml')['COHERE_API_KEY']
 co = cohere.Client(cohere_key) 
 
 
-# Function to send prompt to OpenaiAPI
+# Function to send prompt to Cohere
 def send_prompt(prompt):
     print(f"================\nThis is the plan\n"+prompt)
     tic=time.time()
