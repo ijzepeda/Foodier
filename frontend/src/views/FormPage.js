@@ -5,31 +5,83 @@ import {
   Stepper,
   TextInput,
   MultiSelect,
-  Slider,
-  Text,
-  Input,
 } from '@mantine/core';
 import React, { useState } from 'react';
 import { useForm } from '@mantine/form';
+import { api } from '../api';
 
 export default function Formpage({ setState }) {
+  const [response, setResponse] = useState({
+    Monday: {
+      Breakfast: 'Overnight Oats',
+      Lunch: 'Vegetable Quinoa',
+      Dinner: 'Spaghetti with Tomato Sauce',
+    },
+    Tuesday: {
+      Breakfast: 'Cereal with Oat Milk',
+      Lunch: 'Vegetable Quinoa',
+      Dinner: 'Spaghetti with Tomato Sauce',
+    },
+    Wednesday: {
+      Breakfast: 'Overnight Oats',
+      Lunch: 'Vegetable Quinoa',
+      Dinner: 'Spaghetti with Tomato Sauce',
+    },
+    Thursday: {
+      Breakfast: 'Cereal with Oat Milk',
+      Lunch: 'Vegetable Quinoa',
+      Dinner: 'Spaghetti with Tomato Sauce',
+    },
+    Friday: {
+      Breakfast: 'Overnight Oats',
+      Lunch: 'Vegetable Quinoa',
+      Dinner: 'Spaghetti with Tomato Sauce',
+    },
+    Saturday: {
+      Breakfast: 'Cereal with Oat Milk',
+      Lunch: 'Vegetable Quinoa',
+      Dinner: 'Spaghetti with Tomato Sauce',
+    },
+    Sunday: {
+      Breakfast: 'Overnight Oats',
+      Lunch: 'Vegetable Quinoa',
+      Dinner: 'Spaghetti with Tomato Sauce',
+    },
+    Ingredients: [
+      'rolled oats',
+      'milk',
+      'quinoa',
+      'vegetable oil',
+      'garlic powder',
+      'onion powder',
+      'salt',
+      'pepper',
+      'spaghetti',
+      'tomato sauce',
+    ],
+  });
+  //setting active step for stepper
   const [active, setActive] = useState(0);
   const nextStep = () =>
     setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () =>
     setActive((current) => (current > 0 ? current - 1 : current));
 
+  // mantine form hook
   const form = useForm({
     initialValues: {
       daysofweek: 'whole week',
     },
   });
 
-  const nextStepSubmit = () => {
+  //after pressing submit function
+  const nextStepSubmit = async () => {
     console.log(form.values);
+    // api('/api', { data: 'hello' }, 'POST').then((data) => data);
     nextStep();
   };
 
+  // Three steps with labels
   return (
     <div>
       <form>
@@ -122,27 +174,45 @@ export default function Formpage({ setState }) {
               placeholder='Select multiple meals'
               {...form.getInputProps('meals')}
             />
-            {/* <br />
-            <Input.Wrapper label='Variety'></Input.Wrapper>
-            <Slider value={value} onChange={setValue} min={1} max={21} />
-            <Text>{value}</Text> */}
           </Stepper.Step>
 
-          <Stepper.Completed>Completed, Please wait.</Stepper.Completed>
+          <Stepper.Completed>
+            {Object.keys(response).map((e, i) => {
+              if (e !== 'Ingredients')
+                return (
+                  <div>
+                    <div>{e}</div>
+                    <div>Break Fast: {response[e].Breakfast}</div>
+                    <div>Lunch: {response[e].Lunch}</div>
+                    <div>Dinner: {response[e].Dinner}</div>
+                    <br />
+                  </div>
+                );
+              else
+                return (
+                  <div>
+                    Ingridients:
+                    {response[e].map((eachIngridient, index) => {
+                      return eachIngridient + ',';
+                    })}
+                  </div>
+                );
+            })}
+          </Stepper.Completed>
         </Stepper>
 
         <Group position='center' mt='xl'>
-          {active != 0 && active < 3 && (
+          {active !== 0 && active < 3 && (
             <Button variant='default' onClick={prevStep}>
               Back
             </Button>
           )}
           {active < 2 ? (
             <Button onClick={nextStep}>Next step</Button>
-          ) : active == 2 ? (
+          ) : active === 2 ? (
             <Button onClick={nextStepSubmit}>Submit</Button>
           ) : (
-            <p></p>
+            <></>
           )}
         </Group>
       </form>
