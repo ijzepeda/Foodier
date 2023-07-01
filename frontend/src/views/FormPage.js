@@ -76,8 +76,10 @@ export default function Formpage({ setState }) {
 
   //after pressing submit function
   const nextStepSubmit = async () => {
-    console.log(form.values);
-    // api('/api', { data: 'hello' }, 'POST').then((data) => data);
+    // console.log(form.values);
+    api('/api', {})
+      .then((data) => console.log(data))
+      .catch((e) => console.log(e));
     nextStep();
   };
 
