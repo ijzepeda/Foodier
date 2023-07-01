@@ -27,7 +27,7 @@ def send_prompt(prompt):
 
 
 
-if(True):#str(input("Are you Ivan?")).lower()=="yes"):
+if(True):
     name="Ivan"
     age="30"
     height="165"
