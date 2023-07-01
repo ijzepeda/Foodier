@@ -22,55 +22,7 @@ export default function Formpage({ setState }) {
     '#D0F5BE',
     '#FBFFDC',
   ];
-  const [response, setResponse] = useState({
-    Monday: {
-      Breakfast: 'Overnight Oats',
-      Lunch: 'Vegetable Quinoa',
-      Dinner: 'Spaghetti with Tomato Sauce',
-    },
-    Tuesday: {
-      Breakfast: 'Cereal with Oat Milk',
-      Lunch: 'Vegetable Quinoa',
-      Dinner: 'Spaghetti with Tomato Sauce',
-    },
-    Wednesday: {
-      Breakfast: 'Overnight Oats',
-      Lunch: 'Vegetable Quinoa',
-      Dinner: 'Spaghetti with Tomato Sauce',
-    },
-    Thursday: {
-      Breakfast: 'Cereal with Oat Milk',
-      Lunch: 'Vegetable Quinoa',
-      Dinner: 'Spaghetti with Tomato Sauce',
-    },
-    Friday: {
-      Breakfast: 'Overnight Oats',
-      Lunch: 'Vegetable Quinoa',
-      Dinner: 'Spaghetti with Tomato Sauce',
-    },
-    Saturday: {
-      Breakfast: 'Cereal with Oat Milk',
-      Lunch: 'Vegetable Quinoa',
-      Dinner: 'Spaghetti with Tomato Sauce',
-    },
-    Sunday: {
-      Breakfast: 'Overnight Oats',
-      Lunch: 'Vegetable Quinoa',
-      Dinner: 'Spaghetti with Tomato Sauce',
-    },
-    Ingredients: [
-      'rolled oats',
-      'milk',
-      'quinoa',
-      'vegetable oil',
-      'garlic powder',
-      'onion powder',
-      'salt',
-      'pepper',
-      'spaghetti',
-      'tomato sauce',
-    ],
-  });
+  const [response, setResponse] = useState(null);
   //setting active step for stepper
   const [active, setActive] = useState(0);
   const nextStep = () =>
@@ -98,7 +50,7 @@ export default function Formpage({ setState }) {
   const nextStepSubmit = async () => {
     console.log(form.values);
     api('/api', { ...form.values }, 'POST')
-      .then((data) => setResponse(JSON.parse(data)))
+      .then((data) => setResponse(JSON.parse(data.message)))
       .catch((e) => console.log(e));
     nextStep();
   };
@@ -227,7 +179,7 @@ export default function Formpage({ setState }) {
           </Stepper.Step>
 
           <Stepper.Completed>
-            {
+            {response ? (
               <>
                 <Table>
                   <thead>
@@ -294,7 +246,9 @@ export default function Formpage({ setState }) {
                   })}
                 </div>
               </>
-            }
+            ) : (
+              <p>Loading...</p>
+            )}
           </Stepper.Completed>
         </Stepper>
 
