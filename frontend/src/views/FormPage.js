@@ -8,9 +8,19 @@ import {
 } from '@mantine/core';
 import React, { useState } from 'react';
 import { useForm } from '@mantine/form';
+import { Table } from '@mantine/core';
 import { api } from '../api';
 
 export default function Formpage({ setState }) {
+  const colorPallete = [
+    '#C1ECE4',
+    '#FFD6A5',
+    '#FFFEC4',
+    '#CBFFA9',
+    '#E6FFFD',
+    '#D0F5BE',
+    '#FBFFDC',
+  ];
   const [response, setResponse] = useState({
     Monday: {
       Breakfast: 'Overnight Oats',
@@ -71,16 +81,53 @@ export default function Formpage({ setState }) {
   const form = useForm({
     initialValues: {
       daysofweek: 'whole week',
+      name: '',
+      weight: null,
+      height: null,
+      age: null,
+      diet: '',
+      allergies: '',
+      favfood: '',
+      budget: null,
+      meals: null,
     },
   });
 
   //after pressing submit function
   const nextStepSubmit = async () => {
-    // console.log(form.values);
+    console.log(form.values);
     api('/api', {})
       .then((data) => console.log(data))
       .catch((e) => console.log(e));
     nextStep();
+  };
+
+  const rows = (e, i) => {
+    const data = response[e];
+    return (
+      <tr
+        key={data.Breakfast}
+        style={{
+          margin: '10px auto',
+          backgroundColor: colorPallete[i],
+        }}
+      >
+        <td
+          style={{
+            // backgroundColor: 'red',
+            padding: '20px 10px',
+            fontWeight: 'bolder',
+            fontSize: '20px',
+            borderRight: '3px solid #cccccc',
+          }}
+        >
+          {e}
+        </td>
+        <td>{data.Breakfast || '-'}</td>
+        <td>{data.Lunch || '-'}</td>
+        <td>{data.Dinner || '-'}</td>
+      </tr>
+    );
   };
 
   // Three steps with labels
@@ -179,27 +226,74 @@ export default function Formpage({ setState }) {
           </Stepper.Step>
 
           <Stepper.Completed>
-            {Object.keys(response).map((e, i) => {
-              if (e !== 'Ingredients')
-                return (
-                  <div>
-                    <div>{e}</div>
-                    <div>Break Fast: {response[e].Breakfast}</div>
-                    <div>Lunch: {response[e].Lunch}</div>
-                    <div>Dinner: {response[e].Dinner}</div>
-                    <br />
-                  </div>
-                );
-              else
-                return (
-                  <div>
-                    Ingridients:
-                    {response[e].map((eachIngridient, index) => {
-                      return eachIngridient + ',';
+            {
+              <>
+                <Table>
+                  <thead>
+                    <tr
+                      style={{
+                        border: '3px solid #eeeeee',
+                        fontSize: '20px',
+                      }}
+                    >
+                      <th
+                        style={{
+                          fontSize: '20px',
+                          borderRight: '3px solid #cccccc',
+                        }}
+                      >
+                        Day
+                      </th>
+                      <th
+                        style={{
+                          padding: '20px',
+                          fontSize: '20px',
+                        }}
+                      >
+                        Breakfast
+                      </th>
+                      <th
+                        style={{
+                          fontSize: '20px',
+                        }}
+                      >
+                        Lunch
+                      </th>
+                      <th
+                        style={{
+                          fontSize: '20px',
+                        }}
+                      >
+                        Dinner
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.keys(response).map((e, i) => {
+                      if (e !== 'Ingredients') return rows(e, i);
                     })}
-                  </div>
-                );
-            })}
+                  </tbody>
+                </Table>
+                <br />
+                <div>
+                  <p
+                    style={{
+                      fontWeight: 'bolder',
+                    }}
+                  >
+                    Ingridients:
+                  </p>
+
+                  {response.Ingredients.map((eachIngridient, index) => {
+                    return (
+                      eachIngridient.charAt(0).toUpperCase() +
+                      eachIngridient.slice(1) +
+                      ', '
+                    );
+                  })}
+                </div>
+              </>
+            }
           </Stepper.Completed>
         </Stepper>
 
