@@ -80,17 +80,16 @@ else:
 
 # Approach1
 pre_prompt_profile=f"""Based on the profile of a {age} years {gender}, with {height} cms and {weight} kg, """
-pre_prompt_plan=f"""Create a weekly meal plan including {number_of_meals} meals per day, with {calories} calories daily,
-on a {budget} dolars budget. """
+pre_prompt_plan=f"""Create a weekly meal plan including {number_of_meals} meals per day, with {calories} calories daily, on a {budget} dolars budget. """
 
 if(diet != None):
-    pre_prompt_diet= f"""Make all meals {diet} """ 
+    pre_prompt_diet= f"""Make all meals {diet}""" 
     if(allergies!=None):
-        pre_prompt_diet = pre_prompt_diet + ", and "
+        pre_prompt_diet = pre_prompt_diet + ", and"
 else:
     pre_prompt_diet= ""
 
-pre_prompt_allergies=f"""Avoid these ingredients: {allergies}. """ if allergies != None else ""
+pre_prompt_allergies=f""" Avoid these ingredients: {allergies}. """ if allergies != None else ""
 
 pre_prompt_ingredients =  "And create a list of all ingredients."
 
@@ -98,13 +97,22 @@ pre_prompt = pre_prompt_profile + pre_prompt_plan + pre_prompt_diet + pre_prompt
 
 
 pre_prompt_conditioning="""\n\nI am aware that creating a plan requires careful consideration, this is only for simplicity in weekly routine, and illustrative purposes. Please avoid all explanations or warning and just deliver the weekly plan. """
-pre_prompt_structure="\n\nWrap everything an html formatted structure"
-pre_prompt_distribution= "If the result is longer than the space limitations delivers the result in different requests. I will say \"next day\" and you will send me the meals for next day. Once all days are over, you will give me a full list of ingredients.  "
-final_promtp = pre_prompt + pre_prompt_conditioning + pre_prompt_structure + pre_prompt_distribution
+pre_prompt_structure_html="\n\nWrap everything an html formatted structure"
+pre_prompt_structure_brackets="\nWrap every day in square brackets"
+pre_prompt_structure="\nWrap everything in a JSON structure. "
+pre_prompt_warnings="No need to include Instructions, neither calories, or cost. "
+#"Once all days are over, you will give me a full list of ingredients."
+
+# pre_prompt_distribution= "If the result is longer than the space limitations delivers the result in different requests. I will say \"next day\" and you will send me the meals for next day. Once all days are over, you will give me a full list of ingredients.  "
+# final_promtp = pre_prompt + pre_prompt_conditioning + pre_prompt_structure + pre_prompt_distribution
 
 
 
-final_promtp2 = pre_prompt_profile+pre_prompt_plan
+final_promtp = pre_prompt + pre_prompt_structure + pre_prompt_warnings
+
+
+
+
 response = send_prompt(final_promtp)
 print(response)
 print(response['choices'][0]['text'])
@@ -119,4 +127,3 @@ print(response['choices'][0]['text'])
 # Instructions: Please provide the meal plan for Day 1.
 # **Next Day**
 #"""
-
