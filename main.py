@@ -12,6 +12,7 @@ openai.api_key = toml.load('secrets.toml')['OPENAI_API_KEY']#os.getenv("OPENAI_A
 def send_prompt(prompt):
     # prompt="""Based on the profile of a 30 years man, with 165 cms and 65 kg, Create a weekly meal plan including 3 meals per day, with 2000 calories daily, on a 100 dolars budget.
     #  Also include a full list of all ingredients after giving all the meals. No need to include prices"""
+    prompt="""Create a meal plan for 5 days including 3 meals per day and create a list of all ingredients, for a 30 years man, with 165 cms and 65 kg, with 2000 calories daily, on a 100 dolars budget. Make all meals Vegan, and Avoid these ingredients: peanuts."""
     print(f"================\nThis is the plan\n"+prompt)
     tic=time.time()
     max_tokens=1000-len(prompt.split())
@@ -96,7 +97,8 @@ pre_prompt_warnings="No need to include Instructions, neither calories, or cost.
 
 
 
-final_promtp = pre_prompt + pre_prompt_structure + pre_prompt_warnings
+# final_promtp = pre_prompt + pre_prompt_structure + pre_prompt_warnings
+final_promtp = pre_prompt
 
 
 
