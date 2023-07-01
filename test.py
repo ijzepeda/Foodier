@@ -121,10 +121,11 @@ def test(body): #body
     #parse dictionary of data fields
     name, weight, height, age, diet, allergies, budget, gender , daysofweek, meals, favfood= parse_and_assign(body)
     prompt = create_prompt(name, weight, height, age, diet, allergies, budget, gender , daysofweek, meals, favfood)
-    _response = send_prompt(prompt)
-    print(_response)
+    _response_clean=prompt# TeST delte
+    # _response = send_prompt(prompt)
+    # print(_response)
 
-    _response_clean = clean_response(_response)
+    # _response_clean = clean_response(_response)
     send_email(name, _response_clean)
 
     return {"message": _response_clean}
@@ -153,6 +154,9 @@ _json_test={
     }
 
 test(_json_test)
+
+
+
 
 
 
