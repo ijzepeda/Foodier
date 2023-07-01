@@ -7,7 +7,7 @@ import {
   TextInput,
   MultiSelect,
 } from '@mantine/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { Table } from '@mantine/core';
 import { api } from '../api';
@@ -50,10 +50,14 @@ export default function Formpage({ setState }) {
   const nextStepSubmit = async () => {
     console.log(form.values);
     api('/api', { ...form.values }, 'POST')
-      .then((data) => setResponse(JSON.parse(data.message)))
+      .then((data) => {
+        if (data.data.message) setResponse(JSON.parse(data.data.message));
+      })
       .catch((e) => console.log(e));
     nextStep();
   };
+
+  useEffect(() => {}, response);
 
   const rows = (e, i) => {
     const data = response[e];

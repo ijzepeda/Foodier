@@ -141,6 +141,8 @@ async def root(body: Dict[Any, Any]): #body
    
     # send_email(name, ingredients, email)
     # send_email(name)
+    
+    print(_response,"response")
 
 
     return {"message": _response}
