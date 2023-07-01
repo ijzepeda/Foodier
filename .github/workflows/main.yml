@@ -36,4 +36,4 @@ jobs:
           pip install fastapi jinja2 toml cohere gunicorn
           pip install "uvicorn[standard]"
           ls
-          pm2 start "gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app" --name hello_world
+          RUNNER_TRACKING_ID="" && pm2 start "gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app" --name hello_world
