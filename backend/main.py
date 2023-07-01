@@ -12,11 +12,18 @@ import cohere
 
 # FastAPI 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="build")
 
 
+class SPAStaticFiles(StaticFiles):
+    async def get_response(self, path: str, scope):
+        response = await super().get_response(path, scope)
+        if response.status_code == 404:
+            response = await super().get_response('.', scope)
+        return response
 # COHERE
+
+app.mount("/static", SPAStaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="build")
 
 cohere_key = toml.load('secrets.toml')['COHERE_API_KEY']
 co = cohere.Client(cohere_key) 
