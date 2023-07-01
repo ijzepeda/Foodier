@@ -35,4 +35,5 @@ jobs:
           . venv/bin/activate
           pip install fastapi jinja2 toml cohere
           pip install "uvicorn[standard]"
+          ls
           pm2 start "gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app" --name hello_world
