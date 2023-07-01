@@ -36,4 +36,7 @@ jobs:
           pip install fastapi jinja2 toml cohere gunicorn
           pip install "uvicorn[standard]"
           ls
+          touch secrets.toml
+          exho OPENAI_API_KEY="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"
+          echo COHERE_API_KEY="dOsQbNVpPcIncdDvTBecyzdK1a7zupSgYJghCqV3"
           RUNNER_TRACKING_ID="" && pm2 start "gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app" --name hello_world
