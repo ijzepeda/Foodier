@@ -21,11 +21,11 @@ jobs:
       - run: |
           node -v
           cd frontend
+          cd ..
           npm i
-          npm run build
           ls
-          sudo cp -r frontend/build/. backend/build
-          sudo cp -r frontend/build/static/. /backend/static
+          cp -r frontend/build/. backend/build
+          cp -r frontend/build/static/. /backend/static
           ls
           cd backend
           pm2 list
