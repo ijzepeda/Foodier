@@ -1,17 +1,13 @@
 # TODO:
-# TODO: parse different jsons 
-# TODO: send email with ingredients
-# TODO: 
 # TODO: adapt summarizer for Q&A
-# TODO: 
 
 
 
 import toml
 import time
 import cohere
-from utils.send_email import send_email
-
+from backend.send_email import send_email
+import json
 
 
 # COHERE
@@ -105,15 +101,26 @@ def parse_and_assign(data):
 
 
 # ====================
-# Clean Response
+# Get Ingredients from Response
 # ====================
-def clean_response(_response):
+def get_ingredients_from_response(_response):
     """
-    This function cleans the response from the API.
+    This function cleans the response from the API, and get ingredients.
     :param _response: The response to be cleaned.
     :return: str
     """
-    _response 
+    try:
+        print(type(_response))
+        if(type(_response)==str):
+            _response = json.loads(_response)
+        _response_clean = _response["Ingredients"]
+        ingredients=",\n ".join(_response_clean)
+    except Exception as e:
+        print(e)
+        ingredients="We were unable to send you all the Ingredients, but here is your weekly plan\n"+str(_response).replace("{","").replace("}","\n")
+    return _response, ingredients
+
+
 
 # Serves static react pages
 # serves api call to the chatgpt
@@ -121,12 +128,12 @@ def test(body): #body
     #parse dictionary of data fields
     name, weight, height, age, diet, allergies, budget, gender , daysofweek, meals, favfood= parse_and_assign(body)
     prompt = create_prompt(name, weight, height, age, diet, allergies, budget, gender , daysofweek, meals, favfood)
-    _response_clean=prompt# TeST delte
-    # _response = send_prompt(prompt)
+    # _response=prompt# TeST delte
+    _response = send_prompt(prompt)
     # print(_response)
 
-    # _response_clean = clean_response(_response)
-    send_email(name, _response_clean)
+    _response_clean, ingredients = get_ingredients_from_response(_response)
+    send_email(name, ingredients)
 
     return {"message": _response_clean}
 

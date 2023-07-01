@@ -8,7 +8,7 @@ import toml
 import time
 import cohere
 
-# from utils.send_email import send_email
+from backend.send_email import send_email
 
 # FastAPI 
 app = FastAPI()
@@ -113,15 +113,27 @@ def parse_and_assign(data):
 
 
 # ====================
-# Clean Response
+# Get Ingredients from Response
 # ====================
-def clean_response(_response):
+def get_ingredients_from_response(_response):
     """
-    This function cleans the response from the API.
+    This function cleans the response from the API, and get ingredients.
     :param _response: The response to be cleaned.
     :return: str
     """
-    _response 
+    try:
+        print(type(_response))
+        if(type(_response)==str):
+            _response = json.loads(_response)
+        _response_clean = _response["Ingredients"]
+        ingredients=",\n ".join(_response_clean)
+    except Exception as e:
+        print(e)
+        ingredients="We were unable to send you all the Ingredients, but here is your weekly plan\n"+str(_response).replace("{","").replace("}","\n")
+    return ingredients
+
+
+
 
 # Serves static react pages
 @app.get("/")
@@ -137,10 +149,8 @@ async def root(body: Dict[Any, Any]): #body
     _response = send_prompt(prompt)
     print(_response)
 
-    _response_clean = clean_response(_response)
+    ingredients = get_ingredients_from_response(_response)
    
-    # send_email(name, ingredients, email)
-    # send_email(name)
-
+    send_email(name, ingredients)
 
     return {"message": _response}
