@@ -2,12 +2,13 @@ from fastapi import FastAPI,  Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from typing import Dict, Any
 
 import toml
 import time
 import cohere
 
-from utils.send_email import send_email
+# from utils.send_email import send_email
 
 # FastAPI 
 app = FastAPI()
@@ -123,8 +124,8 @@ async def serve_spa(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 # serves api call to the chatgpt
-@app.get("/api")
-async def root(body): #body
+@app.post("/api")
+async def root(body: Dict[Any, Any]): #body
     #parse dictionary of data fields
     name, weight, height, age, diet, allergies, budget, gender , daysofweek, meals, favfood= parse_and_assign(body)
     prompt = create_prompt(name, weight, height, age, diet, allergies, budget, gender , daysofweek, meals, favfood)
@@ -132,8 +133,9 @@ async def root(body): #body
     print(_response)
 
     _response_clean = clean_response(_response)
+   
     # send_email(name, ingredients, email)
     # send_email(name)
 
 
-    return {"message": _response_clean}
+    return {"message": _response}

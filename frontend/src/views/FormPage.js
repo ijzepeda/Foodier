@@ -97,8 +97,8 @@ export default function Formpage({ setState }) {
   //after pressing submit function
   const nextStepSubmit = async () => {
     console.log(form.values);
-    api('/api', {})
-      .then((data) => console.log(data))
+    api('/api', { ...form.values }, 'POST')
+      .then((data) => setResponse(JSON.parse(data)))
       .catch((e) => console.log(e));
     nextStep();
   };
